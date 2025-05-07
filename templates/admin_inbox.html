@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Inbox</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Admin Inbox</h2>
+<div class="
+section">
+    <!-- Non-Anonymous Messages -->
+<div class="section">
+    <h3>Non-Anonymous Messages</h3>
+    {% if non_anon_messages %}
+        {% for msg in non_anon_messages %}
+            <div class="message-box">
+                <p><strong>From:</strong> {{ msg['full_name'] }}</p>
+                <p><strong>Message:</strong> {{ msg['message'] }}</p>
+
+                {% if msg['reply'] %}
+                    <p><strong>Your Reply:</strong> {{ msg['reply'] }}</p>
+                {% else %}
+                    <form method="POST" action="{{ url_for('reply_admin', tenant_id=msg['tenant_id'], message_id=msg['id']) }}">
+                    <textarea name="reply_text" placeholder="Type your reply here..." required></textarea>
+                        <button type="submit" class="btn">Reply</button>
+                    </form>
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <p class="empty-info">No non-anonymous messages.</p>
+    {% endif %}
+</div>
+        <!-- Anonymous Messages -->
+<div class="section">
+    <h3>Anonymous Messages</h3>
+    {% if anon_messages %}
+        {% for msg in anon_messages %}
+            <div class="message-box">
+                <p><strong>Message:</strong> {{ msg['message'] }}</p>
+                {% if msg['reply'] %}
+                    <p><strong>Your Reply:</strong> {{ msg['reply'] }}</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <p class="empty-info">No anonymous messages.</p>
+    {% endif %}
+</div>
+    </div>
+</body>
+</html>

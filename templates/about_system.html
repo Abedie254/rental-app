@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About This System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles_about_system.css') }}">
+</head>
+<body>
+    <div class="container mt-4">
+        <h2 class="text-center">About This System</h2>
+
+        <p><strong>Rental Management System</strong> is a lightweight yet powerful tool designed to help rental property owners or administrators manage tenants efficiently.</p>
+
+        <h3>Core Features:</h3>
+        <ul>
+            <li>Receive and approve new tenant applications.</li>
+            <li>Add, update, or delete tenant records.</li>
+            <li>Record rental payments, balances, and statuses.</li>
+            <li>Search and filter tenants with ease.</li>
+            <li>View a <strong>quick summary</strong> of total tenants, pending approvals, rent defaulters, and total rent owed.</li>
+            <li>Automatically send approval emails to accepted tenants.</li>
+            <li>Provide an intuitive and user-friendly interface for easy management.</li>
+            <li>Enable administrators to generate reports for tracking payments and balances.</li>
+        </ul>
+
+        <h3>Future Enhancements:</h3>
+        <ul>
+            <li>Integration with digital/mobile payment gateways (e.g., M-Pesa, PayPal) for seamless payments.</li>
+            <li>Monthly and annual report generation, allowing property owners to track trends and forecast future rents.</li>
+            <li>Support for managing multiple rental properties, with separate profiles for each property.</li>
+            <li>Role-based access control (admin vs assistant vs accountant) to restrict access based on user roles.</li>
+            <li>Notifications via SMS and email for rent due reminders, ensuring tenants are aware of their payments.</li>
+            <li>Implementation of an automatic rent increase system based on predefined rates or market conditions.</li>
+            <li>Mobile app development to give tenants and property owners full access on the go.</li>
+            <li>Integration with property maintenance tracking to easily request and manage repairs.</li>
+            <li>Real-time analytics and dashboard enhancements for in-depth insights into rental trends and payment history.</li>
+            <li>Support for multi-currency payments for international tenants.</li>
+        </ul>
+
+        <hr>
+
+        <div class="text-center">
+            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-primary">Back to Dashboard</a>
+        </div>
+    </div>
+</body>
+</html>
+

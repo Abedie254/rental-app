@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tenant Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Welcome, {{ tenant['full_name'] }}</h2>
+        <div class="top-links">
+            <a href="{{ url_for('tenant_inbox', tenant_id=tenant['id']) }}">Inbox</a>
+            <a href="{{ url_for('reset_password', tenant_id=tenant['id']) }}">Change Password</a>
+        </div>
+
+        <div class="section">
+            <h3>Your Profile</h3>
+            <p><strong>Full Name:</strong> {{ tenant['full_name'] }}</p>
+            <p><strong>Phone:</strong> {{ tenant['phone'] }}</p>
+            <p><strong>Email:</strong> {{ tenant['email'] }}</p>
+            <p><strong>House Number:</strong> {{ tenant['house_number'] }}</p>
+        </div>
+
+        <div class="section">
+            <h3>Rent Summary</h3>
+            <p><strong>Rent Amount:</strong> {{ tenant['rent_amount'] }}</p>
+            <p><strong>Amount Paid:</strong> {{ tenant['rent_paid'] }}</p>
+            <p><strong>Balance Due:</strong> {{ balance }}</p>
+            <p><strong>Next Rent Due In:</strong> {{ days_remaining }} days</p>
+        </div>
+
+        <div class="section">
+            <h3>Send Anonymous Message to Admin</h3>
+            <form method="POST" action="{{ url_for('send_anonymous_message', tenant_id=tenant['id']) }}">
+                <label for="message">Message:</label><br>
+                <textarea name="message" id="message" rows="4" required></textarea>
+                <button type="submit">Send Message</button>
+            </form>
+        </div>
+
+        <div class="section">
+        <h3>Announcements</h3>
+{% if announcements %}
+    <ul>
+        {% for ann in announcements %}
+            <li>
+                <strong>{{ ann['title'] }}</strong><br>
+                {{ ann['content'] }}<br>
+                <em>Posted on: {{ ann['created_at'] }}</em>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No announcements at this time.</p>
+{% endif %}
+        </div>
+    </div>
+</body>
+</html>

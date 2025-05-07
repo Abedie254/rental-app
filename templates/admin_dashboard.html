@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="{{ url_for('about_system') }}">About This System</a>
+        </div>
+        <div class="nav-right">
+            <a href="{{ url_for('new_announcement') }}">Post Announcement</a>
+            <a href="{{ url_for('admin_inbox') }}">Inbox</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </nav>
+
+    <div class="dashboard">
+        <h2>Welcome, Admin</h2>
+
+        <form method="get" class="search-form">
+            <input type="text" name="search" placeholder="Search tenants..." value="{{ search_query }}">
+            <button type="submit">Search</button>
+        </form>
+
+        <canvas id="tenantChart" width="400" height="200"></canvas>
+
+        <div class="metrics-container">
+            <div class="metric-box">
+                <p><strong>Total Tenants:</strong> {{ total_tenants }}</p>
+            </div>
+            <div class="metric-box">
+                <p><strong>Pending Tenants:</strong> {{ pending_tenants }}</p>
+            </div>
+            <div class="metric-box">
+                <p><strong>Underpaid Tenants:</strong> {{ underpaid_count }}</p>
+            </div>
+            <div class="metric-box">
+                <p><strong>Total Balance Due:</strong> {{ total_balance_due }}</p>
+            </div>
+        </div>
+
+        <h3>Registered Tenants</h3>
+        <table class="tenant-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Full Name</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>House Number</th>
+                    <th>Floor</th>
+                    <th>Rent Amount</th>
+                    <th>Payment Status</th>
+                    <th>Balance</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for tenant in tenants %}
+                <tr>
+                    <td>{{ tenant.id_number }}</td>
+                    <td>{{ tenant.full_name }}</td>
+                    <td>{{ tenant.phone }}</td>
+                    <td>{{ tenant.email }}</td>
+                    <td>{{ tenant.house_number or 'N/A' }}</td>
+                    <td>{{ tenant.floor or 'N/A' }}</td>
+                    <td>{{ tenant.rent_amount or 'N/A' }}</td>
+                    <td>{{ tenant.payment_status or 'N/A' }}</td>
+                    <td>{{ tenant.balance_amount or 'N/A' }}</td>
+                    <td>
+                        <a href="/edit/{{ tenant.id }}">Edit</a> |
+                        <a href="/complete/{{ tenant.id }}">Complete</a>
+                        <form action="/delete/{{ tenant.id }}" method="POST" style="display:inline;">
+                            <button type="submit" onclick="return confirm('Are you sure?')">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="pagination">
+            {% if page > 1 %}
+                <a href="{{ url_for('admin_dashboard', page=page-1) }}">Previous</a>
+            {% endif %}
+
+            Page {{ page }} of {{ total_pages }}
+
+            {% if page < total_pages %}
+                <a href="{{ url_for('admin_dashboard', page=page+1) }}">Next</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('tenantChart').getContext('2d');
+        const tenantChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Total Tenants', 'Pending Tenants', 'Underpaid Tenants'],
+                datasets: [{
+                    label: 'Tenant Stats',
+                    data: [{{ total_tenants }}, {{ pending_tenants }}, {{ underpaid_count }}],
+                    backgroundColor: [
+                        'rgba(54, 162, 235, 0.7)',
+                        'rgba(255, 206, 86, 0.7)',
+                        'rgba(255, 99, 132, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(255, 99, 132, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Tenant Overview: Total, Pending, and Underpaid',
+                        font: {
+                            size: 18
+                        },
+                        color: '#333',
+                        padding: {
+                            top: 10,
+                            bottom: 30
+                        }
+                    },
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

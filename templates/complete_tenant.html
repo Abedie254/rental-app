@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Complete Tenant Details</title>
+    <style>
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 4px;
+        }
+        button {
+            margin-top: 15px;
+            padding: 10px 20px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Complete Registration for {{ tenant.full_name }}</h2>
+    <form method="POST">
+        <label>House Number</label>
+        <input type="text" name="house_number" required>
+
+        <label>Floor</label>
+        <input type="text" name="floor" required>
+
+        <label>Rent Amount</label>
+        <input type="number" name="rent_amount" step="0.01" required>
+
+        <label>Payment Status</label>
+        <select name="payment_status" required>
+            <option value="fully_paid">Fully Paid</option>
+            <option value="not_paid">Not Paid</option>
+            <option value="partially_paid">Partially Paid</option>
+        </select>
+
+        <label>Balance Amount (only if partially paid)</label>
+        <input type="number" name="balance_amount" step="0.01">
+
+        <button type="submit">Save</button>
+    </form>
+</body>
+</html>

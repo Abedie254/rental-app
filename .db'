@@ -1,0 +1,32 @@
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+
+app = Flask(_name_)
+
+Config ya database
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///rentals.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
+
+Model ya Tenant
+class Tenant(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    house_number = db.Column(db.String(50), nullable=False)
+    floor = db.Column(db.String(20))
+    phone = db.Column(db.String(15))
+    email = db.Column(db.String(100))  # Column ya Email
+    rent = db.Column(db.Integer)
+    due_date = db.Column(db.String(10))  # Format: YYYY-MM-DD
+
+Route ya kuonyesha homepage
+@app.route('/')
+def home():
+    return "Karibu kwenye Rental Site yetu!"
+
+Ku-run server
+if _name_ == '_main_':
+    with app.app_context():
+        db.create_all()  # Hii itaunda tables kwenye database
+    app.run(debug=True, host='0.0.0.0')
